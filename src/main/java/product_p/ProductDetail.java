@@ -18,8 +18,7 @@ public class ProductDetail implements ProductService {
 		int prodNum = Integer.parseInt(request.getParameter("prodNum"));
 		ProductDTO dto = new ProductDAO().detail(prodNum);
 		
-		System.out.println("리뷰리스트");
-		ArrayList<ReviewDTO> reData = new ReviewDAO().list();
+		ArrayList<ReviewDTO> reData = new ReviewDAO().list(prodNum);
 		request.setAttribute("dto", dto);
 		request.setAttribute("reviewData", reData);
 		
