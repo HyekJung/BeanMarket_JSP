@@ -1,4 +1,4 @@
-package admin_model;
+package dao_p;
 /*
 CREATE TABLE board(
 	no int AUTO_INCREMENT PRIMARY KEY,
@@ -27,6 +27,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import dto_p.AdminDTO;
+
 public class AdminDAO {
 	Connection con;
 	PreparedStatement psmt;
@@ -52,7 +54,7 @@ public class AdminDAO {
 		if(con!=null) {try {con.close();} catch (SQLException e) {}}
 	}
 	
-	public ArrayList<AdminDTO> list(){
+	public ArrayList<AdminDTO> list(String start, String end){
 		ArrayList<AdminDTO> res = new ArrayList<AdminDTO>();
 		
 		sql = "SELECT "
@@ -62,16 +64,59 @@ public class AdminDAO {
 				+ "b.prodCate  AS prodCate,"
 				+ "b.prodPrice AS prodPrice,"
 				+ "a.orderCnt  AS orderCnt,"
-				+ "b.option1   AS option1,"
-				+ "b.option2   AS option2,"
 				+ "b.prodPrice*a.orderCnt AS tot "
 				+ "FROM orderinfo a "
 				+ "LEFT OUTER JOIN product b "
 				+ "ON a.prodNum = b.prodNum "
 				+ "LEFT OUTER JOIN delivery c "
-				+ "ON a.orderNum = c.orderNum ";
+				+ "ON a.orderNum = c.orderNum "
+				+ "ORDER BY c.orderDate DESC "
+				;
+		if(start!=null && end!=null){
+			sql = "SELECT "
+					+ "c.orderDate AS orderDate,"
+					+ "a.orderNum  AS orderNum,"
+					+ "b.prodTitle AS prodTitle,"
+					+ "b.prodCate  AS prodCate,"
+					+ "b.prodPrice AS prodPrice,"
+					+ "a.orderCnt  AS orderCnt,"
+					+ "b.prodPrice*a.orderCnt AS tot "
+					+ "FROM orderinfo a "
+					+ "LEFT OUTER JOIN product b "
+					+ "ON a.prodNum = b.prodNum "
+					+ "LEFT OUTER JOIN delivery c "
+					+ "ON a.orderNum = c.orderNum "
+					+ "WHERE date_format(c.orderDate,'%Y-%m') BETWEEN ? AND ? "
+					+ "ORDER BY c.orderDate DESC "
+					;
+		}
+		
+		if(start==""&&end=="") {
+			sql = "SELECT "
+					+ "c.orderDate AS orderDate,"
+					+ "a.orderNum  AS orderNum,"
+					+ "b.prodTitle AS prodTitle,"
+					+ "b.prodCate  AS prodCate,"
+					+ "b.prodPrice AS prodPrice,"
+					+ "a.orderCnt  AS orderCnt,"
+					+ "b.prodPrice*a.orderCnt AS tot "
+					+ "FROM orderinfo a "
+					+ "LEFT OUTER JOIN product b "
+					+ "ON a.prodNum = b.prodNum "
+					+ "LEFT OUTER JOIN delivery c "
+					+ "ON a.orderNum = c.orderNum "
+					+ "ORDER BY c.orderDate DESC "
+					;
+		}
+
 		try {
 			psmt = con.prepareStatement(sql);
+			if(start!=null && end!=null) {
+				psmt.setString(1, start);
+				psmt.setString(2, end);
+			}
+
+			
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 				AdminDTO dto = new AdminDTO();
@@ -81,8 +126,6 @@ public class AdminDAO {
 				dto.setProdCate(rs.getString("prodCate"));
 				dto.setProdPrice(rs.getInt("prodPrice"));
 				dto.setOrderCnt(rs.getInt("orderCnt"));
-				dto.setOption1(rs.getString("option1"));
-				dto.setOption2(rs.getString("option2"));
 				dto.setTot(rs.getInt("tot"));
 				
 				res.add(dto);
@@ -98,15 +141,41 @@ public class AdminDAO {
 		return res;
 	}
 	
-	public int total(){
+	public int total(String start, String end){
 		int cnt = 0;
 		sql = "SELECT "
 				+ "sum(b.prodPrice*a.orderCnt) AS total "
 				+ "FROM orderinfo a "
 				+ "LEFT OUTER JOIN product b "
-				+ "ON a.prodNum = b.prodNum ";
+				+ "ON a.prodNum = b.prodNum "
+				+ "LEFT OUTER JOIN delivery c "
+				+ "ON a.orderNum = c.orderNum"
+				;
+		if(start!=null && end!=null){
+			sql = "SELECT "
+					+ "sum(b.prodPrice*a.orderCnt) AS total "
+					+ "FROM orderinfo a "
+					+ "LEFT OUTER JOIN product b "
+					+ "ON a.prodNum = b.prodNum "
+					+ "LEFT OUTER JOIN delivery c "
+					+ "ON a.orderNum = c.orderNum "
+					+ "WHERE date_format(c.orderDate,'%Y-%m') BETWEEN ? AND ? ";
+		}
+		if(start==""&&end=="") {
+			sql = "SELECT "
+					+ "sum(b.prodPrice*a.orderCnt) AS total "
+					+ "FROM orderinfo a "
+					+ "LEFT OUTER JOIN product b "
+					+ "ON a.prodNum = b.prodNum "
+					+ "LEFT OUTER JOIN delivery c "
+					+ "ON a.orderNum = c.orderNum";
+		}
 		try {
 			psmt = con.prepareStatement(sql);
+			if(start!=null && end!=null) {
+				psmt.setString(1, start);
+				psmt.setString(2, end);
+			}
 			rs = psmt.executeQuery();
 			rs.next();			
 			cnt = rs.getInt("total");
@@ -121,5 +190,128 @@ public class AdminDAO {
 		return cnt;
 	}
 	
+	public ArrayList<AdminDTO> orderList(){
+		ArrayList<AdminDTO> res = new ArrayList<AdminDTO>();
+		sql = "select "
+				+ "a.orderNum as orderNum, "
+				+ "a.orderDate as orderDate, "
+				+ "a.userId as userId, "
+				+ "c.prodTitle as prodTitle, "
+				+ "a.deliveryStatus as deliveryStatus, "
+				+ "a.wayBill as wayBill, "
+				+ "a.orderStatus as orderStatus "
+				+ "from delivery a "
+				+ "LEFT OUTER JOIN orderinfo b "
+				+ "ON a.orderNum = b.orderNum "
+				+ "LEFT OUTER JOIN product c "
+				+ "ON b.prodNum = c.prodNum "
+				+ "ORDER BY orderDate DESC "
+				;
+		try {
+			psmt = con.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				AdminDTO dto = new AdminDTO();
+				dto.setOrderNum(rs.getInt("orderNum"));
+				dto.setOrderDate(rs.getDate("orderDate"));
+				dto.setUserId(rs.getString("userId"));
+				dto.setProdTitle(rs.getString("prodTitle"));
+				dto.setDeliveryStatus(rs.getString("deliveryStatus"));
+				dto.setWayBill(rs.getString("wayBill"));
+				dto.setOrderStatus(rs.getString("orderStatus"));
+
+				res.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return res;
+	}
+	
+	public ArrayList<AdminDTO> adDeliList(String orderNum){
+		ArrayList<AdminDTO> res = new ArrayList<AdminDTO>();
+		sql = "select "
+				+ "orderNum, "
+				+ "userId, "
+				+ "deliveryStatus, "
+				+ "wayBill, "
+				+ "orderStatus "
+				+ "from delivery "
+				+ "WHERE orderNum = ? ";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, orderNum);
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				AdminDTO dto = new AdminDTO();
+				dto.setOrderNum(rs.getInt("orderNum"));
+				dto.setUserId(rs.getString("userId"));
+				dto.setDeliveryStatus(rs.getString("deliveryStatus"));
+				dto.setWayBill(rs.getString("wayBill"));
+				dto.setOrderStatus(rs.getString("orderStatus"));
+
+				res.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return res;
+	}
+	
+	public ArrayList<AdminDTO> adDeliProd(String orderNum){
+		ArrayList<AdminDTO> res = new ArrayList<AdminDTO>();
+		sql = "SELECT "
+				+ "a.prodTitle as prodTitle "
+				+ "FROM product a "
+				+ "LEFT OUTER JOIN orderinfo b "
+				+ "ON a.prodNum = b.prodNum "
+				+ "WHERE b.orderNum = ? ";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, orderNum);
+			
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				AdminDTO dto = new AdminDTO();
+				dto.setProdTitle(rs.getString("prodTitle"));
+
+				res.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return res;
+	}
+	
+	public void deliModify(AdminDTO dto){
+		
+		sql = "update delivery set deliveryStatus = ? , wayBill = ? , orderStatus = ? where orderNum = ? ";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, dto.getDeliveryStatus());
+			psmt.setString(2, dto.getWayBill());
+			psmt.setString(3, dto.getOrderStatus());
+			psmt.setInt(4, dto.getOrderNum());
+			
+			psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+	}
 	
 }

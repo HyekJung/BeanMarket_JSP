@@ -9,7 +9,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import boardNextPage_p.NoticeListPager;
+
+import board_p.NoticeListPager;
+
 
 
 
@@ -40,8 +42,8 @@ public class NoticeDAO {
 		query = "select * from notice order by noticeNum desc limit ?,?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, page.getStartInx());
-			preparedStatement.setInt(2, page.getPerPage());
+			preparedStatement.setInt(1, page.getStart());
+			preparedStatement.setInt(2, page.getLimit());
 			resultSet = preparedStatement.executeQuery();
 			
 			while(resultSet.next()) {
@@ -126,14 +128,13 @@ public class NoticeDAO {
 	
 	//게시물 수정하기
 	public void editPost(NoticeDTO dto) {
-		query = "update notice set noticeTitle=?, userId=?, noticeContent=?, noticeFile=? where noticeNum=?";
+		query = "update notice set noticeTitle=?, noticeContent=?, noticeFile=? where noticeNum=?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, dto.getnoticeTitle());
-			preparedStatement.setString(2, dto.getUserId());
-			preparedStatement.setString(3, dto.getnoticeContent());
-			preparedStatement.setString(4, dto.getnoticeFile());
-			preparedStatement.setInt(5, dto.getnoticeNum());
+			preparedStatement.setString(2, dto.getnoticeContent());
+			preparedStatement.setString(3, dto.getnoticeFile());
+			preparedStatement.setInt(4, dto.getnoticeNum());
 			preparedStatement.executeUpdate();	
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -173,5 +174,22 @@ public class NoticeDAO {
 		}
 		return result;
 	}		
+	   public int noticeTotal(){
+		      int cnt = 0;
+		      try {
+		         query = "select count(*) from notice";
+		         preparedStatement = connection.prepareStatement(query);
+		         resultSet = preparedStatement.executeQuery();
+		         resultSet.next();//다음 행 이동
+		         cnt = resultSet.getInt(1);
+		      } catch (SQLException e) {
+		         e.printStackTrace();
+		      }finally {
+		         close();
+		      }
+		      return cnt;
+		   }
+		   
+		
 	
 }

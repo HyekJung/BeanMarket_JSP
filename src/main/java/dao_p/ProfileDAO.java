@@ -10,8 +10,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import dto_p.MemberDTO;
 import dto_p.ProfileDTO;
-import order_model.OrderDTO;
+
+
+
+
 
 public class ProfileDAO {
 	Connection con;
@@ -72,14 +76,16 @@ public class ProfileDAO {
 		return res;
 	}
 	
-	public void modify(ProfileDTO dto){
+	public void modify(MemberDTO dto){
 
-		sql = "update member set pw = ? , addr = ? where userId = ?";
+		sql = "update member set pw = ? , addr = ?, email = ?, tel = ? where userId = ?";
 		try {
 			psmt = con.prepareStatement(sql);
 			psmt.setString(1, dto.getPw());
 			psmt.setString(2, dto.getAddr());
-			psmt.setString(3, dto.getUserId());
+			psmt.setString(3, dto.getEmail());
+			psmt.setString(4, dto.getTel());
+			psmt.setString(5, dto.getUserId());
 			
 			
 			psmt.executeUpdate();

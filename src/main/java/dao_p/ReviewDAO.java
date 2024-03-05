@@ -36,11 +36,13 @@ public class ReviewDAO {
 		if(con!=null) { try { con.close();} catch (SQLException e) {}}
 	}
 	
-	public ArrayList<ReviewDTO> list(){
+	public ArrayList<ReviewDTO> list(int prodNum){
 		ArrayList<ReviewDTO> res = new ArrayList<ReviewDTO>();
-		sql = "select * from review";
+		
+		sql = "select * from review where prodNum=?";
 		try {
 			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, prodNum);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 
@@ -51,7 +53,6 @@ public class ReviewDAO {
 				dto.setReviewTitle(rs.getString("reviewTitle"));
 				dto.setReviewContent(rs.getString("reviewContent"));
 				dto.setUserId(rs.getString("userId"));
-				
 				res.add(dto);
 			}
 			
@@ -64,93 +65,72 @@ public class ReviewDAO {
 		return res;
 	}
 	
-//	public ProductDTO detail(int prodNum){
-//		ProductDTO dto = null;
-//		
-//		sql = "select * from product where prodNum = ?";
-//		try {
-//			psmt = con.prepareStatement(sql);
-//			psmt.setInt(1, prodNum);
-//			rs = psmt.executeQuery();
-//			
-//			if(rs.next()) {
-//				dto = new ProductDTO();
-//				dto.setProdNum(rs.getInt("prodNum"));
-//				dto.setProdTitle(rs.getString("prodTitle"));
-//				dto.setProdCate(rs.getString("prodCate"));
-//				dto.setProdFile(rs.getString("prodFile"));
-//				dto.setProdPrice(rs.getInt("prodPrice"));
-//				dto.setProdInfo(rs.getString("prodInfo"));
-//	
-//			}
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			close();
-//		}
-//		
-//		return dto;
-//	}
-//	
-//	public void write(ProductDTO dto){
-//		sql = "insert into product (prodPrice, prodCate, prodFile, prodTitle, ProdInfo) values (?,?,?,?,?)";
-//		try {
-//			psmt = con.prepareStatement(sql);
-//	
-//	
-//			psmt.setInt(1,dto.getProdPrice());
-//			psmt.setString(2,dto.getProdCate());
-//			psmt.setString(3,dto.getProdFile());
-//			psmt.setString(4,dto.getProdTitle());
-//			psmt.setString(5,dto.getProdInfo());
-//	
-//			psmt.executeUpdate();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}finally {
-//			close();
-//		}
-//		
-//	}
-//	
-//	public  void modify(ProductDTO dto){
-//		
-//		sql = "update product set  prodPrice = ?, prodCate = ?, prodFile = ?, prodTitle = ?, prodInfo = ? where prodNum = ?";
-//		try {
-//			psmt = con.prepareStatement(sql);
-//			psmt.setInt(1,dto.getProdPrice());
-//			psmt.setString(2,dto.getProdCate());
-//			psmt.setString(3,dto.getProdFile());
-//			psmt.setString(4,dto.getProdTitle());
-//			psmt.setString(5,dto.getProdInfo());
-//			psmt.setInt(6,dto.getProdNum());
-//		
-//			psmt.executeUpdate();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}finally {
-//			close();
-//		}
-//		
-//		
-//	}
-//	
-//	public  void delete(int prodNum){
-//		
-//		sql = "delete from product where prodNum = ?";
-//		try {
-//			psmt = con.prepareStatement(sql);
-//			psmt.setInt(1, prodNum);
-//		
-//			
-//			psmt.executeUpdate();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}finally {
-//			close();
-//		}
-//	}	
+	public void write(ReviewDTO dto){
+		sql = "insert into review (reviewStar,prodNum,reviewTitle,userId,reviewNum) values (?,?,?,?,?)";
+		try {
+			psmt = con.prepareStatement(sql);
+	
+	
+			psmt.setInt(1,dto.getReviewStar());
+			psmt.setInt(2,dto.getProdNum());
+			psmt.setString(3,dto.getReviewTitle());
+			psmt.setString(4,dto.getUserId());
+			psmt.setInt(5,dto.getReviewNum());
+			
+			
+			psmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+	}
+	
+	
+	public ArrayList<ReviewDTO> detail(String userId){
+		ArrayList<ReviewDTO> res = new ArrayList<ReviewDTO>();
+		ReviewDTO dto = null;
+		
+		sql = "select * from review where userId = ?";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, userId);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				dto = new ReviewDTO();
+				dto.setProdNum(rs.getInt("prodNum"));
+				dto.setReviewTitle(rs.getString("reviewTitle"));
+				dto.setReviewStar(rs.getInt("reviewStar"));
+				dto.setReviewNum(rs.getInt("reviewNum"));
+				dto.setUserId(rs.getString("userId"));
+				res.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return res;
+	}
+
+	public  void delete(int reviewNum){
+		
+		sql = "delete from review where reviewNum = ?";
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setInt(1, reviewNum);
+			
+			
+			psmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+	}	
 }

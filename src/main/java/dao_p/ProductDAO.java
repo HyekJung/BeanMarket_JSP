@@ -35,11 +35,12 @@ public class ProductDAO {
 		if(con!=null) { try { con.close();} catch (SQLException e) {}}
 	}
 	
-	public ArrayList<ProductDTO> list(){
+	public ArrayList<ProductDTO> list(String prodCate){
 		ArrayList<ProductDTO> res = new ArrayList<ProductDTO>();
-		sql = "select * from product";
+		sql = "select * from product where prodCate = ? ";
 		try {
 			psmt = con.prepareStatement(sql);
+			psmt.setString(1, prodCate);
 			rs = psmt.executeQuery();
 			while(rs.next()) {
 
