@@ -10,14 +10,13 @@ public class FileHandler {
 	String directory;
 	
 	public FileHandler(HttpServletRequest request) {
-		directory = request.getServletContext().getRealPath("saveFile/");
-		directory = "C:\\kimhyejung\\study\\javaWork\\firstProjMe\\src\\main\\webapp\\saveFile";//추후 수정 필요
+		directory = request.getServletContext().getRealPath("fff/");
+		//directory = "C:\\kimhyejung\\study\\javaWork\\first-Proj-Team\\firstProj\\src\\main\\webapp\\fff\\";//추후 수정 필요
 		System.out.println(directory);
 		
 	}	
 	
 	public String uploadFile(Part file) throws IOException {
-		int cnt = 1;
 		//getSubmittedFileName : 업로드한 파일의 원래 이름
 		if(!file.getSubmittedFileName().equals("")) {
 
@@ -25,6 +24,7 @@ public class FileHandler {
 			int dot = fileName.lastIndexOf(".");
 			String domain = fileName.substring(0, dot);
 			String ext = fileName.substring(dot);
+			int cnt = 1;
 			
 			File userFile = new File(directory+fileName);
 			
