@@ -1,10 +1,13 @@
 package main_p;
 
+import java.util.ArrayList;	
+
+import dao_p.MainDAO;
+import dto_p.MainDTO;
+import dto_p.MemberDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-//import model_p.BoardDAO;
-//import model_p.BoardDTO;
-//import model_p.PPData;
+import jakarta.servlet.http.HttpSession;
 import service_p.MainService;
 
 public class Main implements MainService {
@@ -17,8 +20,12 @@ public class Main implements MainService {
 //		ArrayList<BoardDTO> data =  new BoardDAO().list(pData);
 //		request.setAttribute("mainData", data);
 //		request.setAttribute("pData", pData);
-		
-		System.out.println("main.excute() 실행");
+		HttpSession session = request.getSession();
+	    System.out.println(session.getAttribute("userId"));
+		ArrayList<MainDTO> data = new MainDAO().list();
+		request.setAttribute("mainData", data);
+	        
+//		System.out.println("main.excute() 실행");
 	}
 
 }
