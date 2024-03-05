@@ -13,6 +13,8 @@ public class ReviewDTO {
 	public int getReviewStar() {
 		return reviewStar;
 	}
+	
+
 	public void setReviewStar(int reviewStar) {
 		this.reviewStar = reviewStar;
 	}

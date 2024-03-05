@@ -13,6 +13,8 @@ public class BoardDTO {
 	private String perContent;//내용
 	private String boardCate;//카테고리
 	private String perFile;//파일 업로드
+	private String answer;//파일 업로드
+	
 	
 	public int getPerNum() {
 		return perNum;
@@ -31,6 +33,12 @@ public class BoardDTO {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getAnswer() {
+		return answer;
+	}
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 	public Date getPerDate() {
 		return perDate;

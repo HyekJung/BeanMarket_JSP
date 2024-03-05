@@ -1,9 +1,11 @@
 package dto_p;
 
 public class CartDTO {
-	String cartTitle, cartFile,option1,option2,userId;
+	String cartTitle, cartFile,option1,option2,userId,
+		   receiver,postNum,orderAddress,message,phoneNum;
 	int prodPrice, prodNum,prodCnt, no;
 	boolean prodChk;
+	
 	public String getCartTitle() {
 		return cartTitle;
 	}
@@ -64,4 +66,35 @@ public class CartDTO {
 	public void setProdChk(boolean prodChk) {
 		this.prodChk = prodChk;
 	}
+	public String getReceiver() {
+		return receiver;
+	}
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
+	}
+	public String getPostNum() {
+		return postNum;
+	}
+	public void setPostNum(String postNum) {
+		this.postNum = postNum;
+	}
+	public String getOrderAddress() {
+		return orderAddress;
+	}
+	public void setOrderAddress(String orderAddress) {
+		this.orderAddress = orderAddress;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+	
 }

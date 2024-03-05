@@ -1,11 +1,11 @@
-package admin_model;
+package dto_p;
 
 import java.util.Date;
 
 public class AdminDTO {
-	int orderCnt, orderNum, prodNum, prodPrice,tot;
+	int orderCnt, orderNum, prodNum, prodPrice,tot,total;
 	Date orderDate;
-	String prodTitle, prodCate, option1, option2;
+	String prodTitle, prodCate, option1, option2, start,end,deliveryStatus,wayBill,orderStatus,userId;
 
 	public int getOrderCnt() {
 		return orderCnt;
@@ -71,6 +71,30 @@ public class AdminDTO {
 		this.prodCate = prodCate;
 	}
 
+	public String getStart() {
+		return start;
+	}
+
+	public void setStart(String start) {
+		this.start = start;
+	}
+
+	public String getEnd() {
+		return end;
+	}
+
+	public void setEnd(String end) {
+		this.end = end;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
 	public String getOption1() {
 		return option1;
 	}
@@ -85,6 +109,38 @@ public class AdminDTO {
 
 	public void setOption2(String option2) {
 		this.option2 = option2;
+	}
+
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+
+	public String getWayBill() {
+		return wayBill;
+	}
+
+	public void setWayBill(String wayBill) {
+		this.wayBill = wayBill;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 	
