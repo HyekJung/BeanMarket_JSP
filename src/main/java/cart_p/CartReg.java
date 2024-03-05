@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import dao_p.CartDAO;
 import dto_p.CartDTO;
+import dto_p.MemberDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class CartReg implements CartService{
 		//request.setAttribute("mainData", data);
 		
 		try {
-			
+			MemberDTO sessDto = (MemberDTO)request.getSession().getAttribute("sessDto");
 			
 			
 			CartDTO dto = new CartDTO();
@@ -40,15 +41,14 @@ public class CartReg implements CartService{
 			dto.setProdNum(Integer.parseInt(request.getParameter("prodNum")));
 			new CartDAO().cartAdd(dto);
 		
-			//int no = new ProductDAO().newNo();
 			if(request.getParameter("chk").equals("true")) {
 				request.setAttribute("mainUrl", "inc/alert.jsp");
 				request.setAttribute("msg", "장바구니로 이동합니다.");
-				request.setAttribute("goUrl", "Cart");
+				request.setAttribute("goUrl", "Cart?admin="+sessDto.getAdmin());
 			}else if(request.getParameter("chk").equals("false")) {
 				request.setAttribute("mainUrl", "inc/alert.jsp");
 				request.setAttribute("msg", "장바구니에 저장되었습니다.");
-				request.setAttribute("goUrl", "/firstProj/product/ProductDetail?prodNum="+request.getParameter("prodNum"));
+				request.setAttribute("goUrl", "/firstProj/product/ProductDetail?prodNum="+request.getParameter("prodNum")+"&admin="+sessDto.getAdmin());
 				
 			}
 			
