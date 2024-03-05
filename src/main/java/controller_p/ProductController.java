@@ -2,6 +2,7 @@ package controller_p;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import java.io.IOException;
  * Servlet implementation class productController
  */
 @WebServlet("/product/*")
+@MultipartConfig()
 public class ProductController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

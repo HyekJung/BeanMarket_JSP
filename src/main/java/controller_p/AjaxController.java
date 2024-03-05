@@ -1,6 +1,5 @@
 package controller_p;
 
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -8,19 +7,24 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import service_p.AdminService;
+
+import service_p.MemberService;
 
 import java.io.IOException;
 
-@WebServlet("/admin/*")
+/**
+ * Servlet implementation class MyPageController
+ */
+
+@WebServlet("/ajax/*")
 @MultipartConfig()
-public class AdminController extends HttpServlet {
+public class AjaxController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdminController() {
+    public AjaxController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,26 +33,20 @@ public class AdminController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		//System.out.println(request.getRequestURI());
-		//System.out.println(request.getContextPath());
-		String cate = "admin/";
+		
+		String cate = "ajax/";
 		String service = request.getRequestURI().substring((request.getContextPath()+"/"+cate).length());
-		//System.out.println(service);
-		request.setAttribute("mainUrl",cate+service+".jsp");
+		System.out.println("멤멤멤");
+		request.setAttribute("mainUrl", cate+service+".jsp");
 		try {
-			AdminService ser = (AdminService)Class.forName("admin_p."+service).newInstance();
-			ser.execute(request, response);
+			MemberService os = (MemberService)Class.forName("member_p."+service).newInstance();
+			os.execute(request, response);
 			
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/view/template.jsp");
-			dispatcher.forward(request, response);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

@@ -7,8 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import order_con.OrderService;
-import profile_con.ProfileService;
+import service_p.ProfileService;
 
 import java.io.IOException;
 
@@ -34,10 +33,10 @@ public class ProfileController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String cate = "profile/";
 		String service = request.getRequestURI().substring((request.getContextPath()+"/"+cate).length());
-		System.out.println(service);
+		System.out.println("pro");
 		request.setAttribute("mainUrl", cate+service+".jsp");
 		try {
-			ProfileService ps = (ProfileService)Class.forName("profile_con."+service).newInstance();
+			ProfileService ps = (ProfileService)Class.forName("profile_p."+service).newInstance();
 			ps.execute(request, response);			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/view/template.jsp");
 			dispatcher.forward(request, response);

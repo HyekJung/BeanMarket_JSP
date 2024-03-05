@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import order_con.OrderService;
+import service_p.OrderService;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ public class OrderController extends HttpServlet {
 		System.out.println(service);
 		request.setAttribute("mainUrl", cate+service+".jsp");
 		try {
-			OrderService os = (OrderService)Class.forName("order_con."+service).newInstance();
+			OrderService os = (OrderService)Class.forName("order_p."+service).newInstance();
 			os.execute(request, response);			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/view/template.jsp");
 			dispatcher.forward(request, response);

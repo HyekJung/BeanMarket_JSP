@@ -7,7 +7,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import myPage_con.MyPageService;
+import service_p.MyPageService;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class MyPageController extends HttpServlet {
 		System.out.println(cate+service);
 		request.setAttribute("mainUrl", cate+service+".jsp");
 		try {
-			MyPageService os = (MyPageService)Class.forName("myPage_con."+service).newInstance();
+			MyPageService os = (MyPageService)Class.forName("myPage_p."+service).newInstance();
 			os.execute(request, response);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/view/template.jsp");
 			dispatcher.forward(request, response);
