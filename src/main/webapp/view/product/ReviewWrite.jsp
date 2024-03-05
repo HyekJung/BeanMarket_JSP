@@ -7,8 +7,13 @@
 
 </head>
 <body>
-<form action="ReviwWriteReg">  
+<form action="ReviewWriteReg?prodNum=${param.prodNum }">  
 	<table border="">
+	 <input type="hidden" name="prodNum" value="${param.prodNum}"/>
+		<tr>
+			<td>작성자</td>
+			<td>${sessDto.userName }</td>
+		</tr>
 		<tr>
 			<td>상품</td>
 			<td>${param.prodTitle }</td>
@@ -31,7 +36,11 @@
 			<td>리뷰내용</td>
 			<td><textarea name="reviewContent" cols="100" rows="5"></textarea></td>
 		</tr> -->
-	
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="등록"/>
+			</td>
+		</tr>
 	
 	</table>
 

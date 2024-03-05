@@ -11,30 +11,35 @@
 <body>
 <!--  method="post" enctype="multipart/form-data"> -->
 <form action="ProductModifyReg">
-	<table>
+	<table class="table table-striped">
 		 <input type="hidden" name="prodNum" value="${dto.prodNum}">
 		<tr>
-			<td>상품명</td>
-			<td ><input type="text" name="prodTitle" value="${dto.prodTitle }" style="width:100%;"/></td>
+			<td class="table-dark">상품명</td>
+			<td ><input class="form-control" type="text" name="prodTitle" value="${dto.prodTitle }" style="width:100%;"/></td>
 		</tr>
 		<tr>
-			<td>카테고리</td>
-			<td ><input type="text" name="prodCate" value="${dto.prodCate }"  style="width:100%;"/></td>
+			<td class="table-dark">카테고리</td>
+			<td ><select class="form-select" name="prodCate" style="width:100%;">
+					<option value="블랜드">블랜드</option>
+					<option value="싱글오리진">싱글오리진</option>
+					<option value="디카페인">디카페인</option>
+				</select>
+			</td>
 		</tr>
 		<tr>
-			<td>상품 대표사진</td>
-			<td><input type="file" name="prodFile" value="${dto.prodFile }" /></td>
+			<td class="table-dark">상품 대표사진</td>
+			<td><input class="form-control" type="file" name="prodFile" value="${dto.prodFile }" /></td>
 		</tr>
 		<tr>
-			<td>상품 금액</td>
-			<td><input type="text" name="prodPrice" value="${dto.prodPrice }"  style="width:100%;"/></td>
+			<td class="table-dark">상품 금액</td>
+			<td><input class="form-control" type="text" name="prodPrice" value="${dto.prodPrice }"  style="width:100%;"/></td>
 		</tr>
 		<tr>
-			<td>상품 상세정보</td>
-			<td><textarea name="prodInfo" cols="100" rows="5">${dto.prodInfo }</textarea></td>
+			<td class="table-dark">상품 상세정보</td>
+			<td><textarea class="form-control" name="prodInfo" cols="100" rows="5">${dto.prodInfo }</textarea></td>
 		</tr>
 		<tr>
-			<td colspan="2"><input type="submit" value="수정완료"/></td>
+			<td colspan="2" align="right"><input class="btn btn-dark" type="submit" value="수정완료"/></td>
 		</tr>
 		
 	</table>

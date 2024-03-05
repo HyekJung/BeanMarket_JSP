@@ -10,11 +10,11 @@
 		width: 750px;
 	}
 	
-	.inputText:nth-child(2) input, .inputText{
+/* 	.inputText:nth-child(2) input, .inputText{
 		display: inline-block;
 		width: 500px;
 		margin: 5px auto;
-	}
+	} */
 	.divContainer{/* 수정 필요 */
         justify-content: center;
         align-items: center;
@@ -24,12 +24,12 @@
 		background-color: #007bff;
 		color: white;
 	}
-	.subButton > input {
+/* 	.subButton > input {
 	 float: right;
      padding: 8px 18px;
      background-color: #147814;
      color: white;
-    }
+    } */
     .subButton{
       float:right;
     }
@@ -52,29 +52,38 @@
 	
 </script>
 
-<h2>게시판 수정하기</h2>
 <form name="forms" action="NoticeEditHandler" method="post" enctype="multipart/form-data">
 	<div class="divContainer">
-	<div class="divHidden"><input type="text" name="noticeNum" value="${dto.noticeNum }" readonly="readonly"/></div>
-		<div class="inputText"><input type="text" name="noticeTitle" value="${dto.noticeTitle}"/></div>
-		<div><textarea cols="30" rows="10" name="noticeContent">${dto.noticeContent}</textarea></div>
-		<table border="" class = "table-cell">
-			<td>첨부파일</td>
-			<td>
-			<c:choose>
-				<c:when test="${dto.noticeFile!=null}">
-					<input type="text" name="noticeFile" value="${dto.noticeFile }" readonly="readonly"/>
-					<input type="button" onclick="deleteFile()" value="파일삭제" />
-				</c:when>
-				<c:otherwise>
-					<input type="file" name = "noticeFile"/>
-				</c:otherwise>
-			</c:choose>
-			</td>
+		<div class="divHidden">
+			<input type="text" name="noticeNum" value="${dto.noticeNum }" readonly="readonly"/>
+		</div>
+		<table class = "table-cell table table-striped-columns">
+			<tr>
+				<td class="table-dark">제목</td>
+				<td><input class="form-control" type="text" name="noticeTitle" value="${dto.noticeTitle}"/></td>
+			</tr>
+			<tr>
+				<td class="table-dark">내용</td>
+				<td><textarea class="form-control" cols="30" rows="10" name="noticeContent">${dto.noticeContent}</textarea></td>
+			</tr>
+			<tr>
+			<td class="table-dark">첨부파일</td>
+				<td>
+				<c:choose>
+					<c:when test="${dto.noticeFile!=null}">
+						<input class="form-control" type="text" name="noticeFile" value="${dto.noticeFile }" readonly="readonly"/>
+						<input class="btn btn-danger" type="button" onclick="deleteFile()" value="파일삭제" />
+					</c:when>
+					<c:otherwise>
+						<input class="form-control" type="file" name = "noticeFile"/>
+					</c:otherwise>
+				</c:choose>
+				</td>
+			</tr>
 		</table>
 		<div class="subButton">
-			<input type="submit" value="수정"/>
-			<input type="button" value="취소" onclick="cancel()"/>
+			<input class="btn btn-dark" type="submit" value="수정"/>
+			<input class="btn btn-danger" type="button" value="취소" onclick="cancel()"/>
 		</div>
 	</div>
 </form>
