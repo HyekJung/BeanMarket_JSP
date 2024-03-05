@@ -6,7 +6,7 @@ import service_p.BoardService;
 import dao_p.BoardDAO;
 import dto_p.BoardDTO;
 
-public class BoardEditForm implements BoardService{
+public class BoardAnswerForm implements BoardService{
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
 		int perNum = Integer.parseInt(request.getParameter("perNum"));

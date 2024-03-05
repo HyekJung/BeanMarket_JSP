@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import service_p.BoardService;
 import dao_p.BoardDAO;
 import dto_p.BoardDTO;
+import dto_p.MemberDTO;
 
 public class DeletePost implements BoardService{
 	@Override
@@ -18,9 +19,9 @@ public class DeletePost implements BoardService{
 		if(dto.getPerFile()!=null) {
 			new etc_p.FileHandler(request).deleteFile(dto.getPerFile());
 		}
-		
+		MemberDTO sessDto = (MemberDTO) request.getSession().getAttribute("sessDto");
 		request.setAttribute("mainUrl", "inc/alert.jsp");
-		request.setAttribute("goUrl", "BoardList");
+		request.setAttribute("goUrl", "BoardList?admin="+sessDto.getAdmin());
 		request.setAttribute("msg", "삭제되었습니다.");
 	}
 }
