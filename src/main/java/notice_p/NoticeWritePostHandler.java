@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import service_p.NoticeService;
 import dao_p.NoticeDAO;
+import dto_p.MemberDTO;
 import dto_p.NoticeDTO;
 
 import java.io.File;
@@ -28,8 +29,8 @@ public class NoticeWritePostHandler implements NoticeService{
 			int cnt=1;
 			
 			
-			String dir = request.getServletContext().getRealPath("fff/");
-			dir = "C:\\kimhyejung\\study\\javaWork\\firstProjMe\\src\\main\\webapp\\saveFile\\";
+			String dir = request.getServletContext().getRealPath("saveFile/");
+			dir = "/firstProj/src/main/webapp/saveFile";
 			
 			File nowFile = new File(dir+fileName);
 				while(nowFile.exists()) {//같은 이름의 파일이 이미 있을 경우
@@ -55,12 +56,12 @@ public class NoticeWritePostHandler implements NoticeService{
 			dto.setnoticeTitle(request.getParameter("writeTitle"));
 			dto.setnoticeContent(request.getParameter("writeContent"));
 			dto.setnoticeFile(upLoadFile);
-			
+			MemberDTO sessDto = (MemberDTO) request.getSession().getAttribute("sessDto");
 			if (!request.getParameter("writeTitle").trim().isEmpty() && !request.getParameter("writeContent").trim().isEmpty()) {
 			    new NoticeDAO().writePost(dto);
 			    request.setAttribute("msg", "등록되었습니다.");
 				request.setAttribute("mainUrl", "inc/alert.jsp");
-				request.setAttribute("goUrl", "NoticeList");
+				request.setAttribute("goUrl", "NoticeList?admin="+sessDto.getAdmin());
 			}else{
 				request.setAttribute("mainUrl", "inc/alert.jsp");
 			    request.setAttribute("msg", "작성하지 않은 필수 항목이 있습니다.");
